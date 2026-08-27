@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王佳铃的个人在线简历 - 新闻传播 × AI 复合型人才" />
+  <title>王佳铃 · 个人简历</title>
+
+  <!-- ==================== 样式 ==================== -->
+  <style>
+    /* ---------- 主题变量（亮/暗色切换） ---------- */
+    :root {
+      --bg: #f5f6fb;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --primary: #6366f1;
+      --primary-2: #8b5cf6;
+      --accent: #f59e0b;
+      --shadow: 0 10px 30px rgba(31, 36, 48, .08);
+      --nav-bg: rgba(255,255,255,.85);
+    }
+
+    body.dark {
+      --bg: #0f1420;
+      --card: #1a2130;
+      --text: #e6e9f2;
+      --muted: #9aa3b5;
+      --line: #2a3348;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --nav-bg: rgba(15,20,32,.85);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+                   "Microsoft YaHei", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      transition: background .4s, color .4s;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+
+    /* ---------- 顶部导航 ---------- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 24px; height: 56px;
+    }
+    .brand { font-weight: 700; font-size: 18px; letter-spacing: 1px; }
+    .brand span { color: var(--primary); }
+    .nav-links { display: flex; gap: 18px; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: var(--primary); }
+    #themeBtn {
+      border: 1px solid var(--line); background: var(--card); color: var(--text);
+      width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+      font-size: 16px; transition: .2s;
+    }
+    #themeBtn:hover { border-color: var(--primary); }
+
+    /* ---------- Hero 区 ---------- */
+    header.hero {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff; text-align: center;
+      padding: 72px 20px 56px; position: relative; overflow: hidden;
+    }
+    header.hero::before, header.hero::after {
+      content: ""; position: absolute; border-radius: 50%;
+      background: rgba(255,255,255,.08);
+    }
+    header.hero::before { width: 260px; height: 260px; top: -80px; left: -60px; }
+    header.hero::after  { width: 340px; height: 340px; bottom: -140px; right: -80px; }
+
+    .avatar {
+      width: 110px; height: 110px; border-radius: 50%;
+      background: rgba(255,255,255,.25); border: 3px solid #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; font-weight: 700; margin: 0 auto 16px;
+    }
+    .hero h1 { font-size: 36px; letter-spacing: 2px; }
+    .hero .subtitle { font-size: 16px; opacity: .92; margin-top: 6px; }
+    .hero .tags { margin-top: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .hero .tag {
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4);
+      padding: 4px 14px; border-radius: 999px; font-size: 13px;
+    }
+
+    /* ---------- 主布局 ---------- */
+    .container {
+      max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: 300px 1fr; gap: 24px;
+      padding: 32px 20px 60px;
+    }
+
+    /* ---------- 卡片 ---------- */
+    .card {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 16px; padding: 24px; box-shadow: var(--shadow);
+      margin-bottom: 24px; transition: background .4s, transform .3s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card h2 {
+      font-size: 17px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .card h2::before {
+      content: ""; width: 4px; height: 18px; border-radius: 2px;
+      background: linear-gradient(var(--primary), var(--primary-2));
+    }
+
+    /* ---------- 列表样式 ---------- */
+    .info-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .info-item .icon { color: var(--primary); flex-shrink: 0; width: 20px; text-align: center; }
+    .info-item a { color: var(--text); word-break: break-all; }
+    .info-item .phone {
+      color: var(--text); font-size: 14px;
+      /* 手机号做成可点击的链接样式，但视觉上不突兀 */
+    }
+
+    .skill-bar { margin-bottom: 14px; }
+    .skill-bar .name { font-size: 14px; margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .skill-bar .track { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; }
+    .skill-bar .fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-2));
+      width: 0; transition: width 1.2s ease;
+    }
+
+    /* ---------- 经历时间线 ---------- */
+    .exp { position: relative; padding-left: 22px; margin-bottom: 18px; }
+    .exp::before {
+      content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px;
+      width: 2px; background: var(--line);
+    }
+    .exp::after {
+      content: ""; position: absolute; left: 2px; top: 8px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--primary);
+    }
+    .exp h3 { font-size: 15px; }
+    .exp .time { font-size: 12px; color: var(--muted); margin: 2px 0 4px; }
+    .exp p { font-size: 14px; color: var(--muted); }
+
+    /* ---------- 荣誉标签 ---------- */
+    .award-group { margin-bottom: 16px; }
+    .award-group h3 { font-size: 14px; color: var(--primary); margin-bottom: 8px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      background: rgba(99,102,241,.1); color: var(--primary);
+      border: 1px solid rgba(99,102,241,.25);
+      padding: 4px 12px; border-radius: 999px; font-size: 13px;
+    }
+    .badge.hl { background: rgba(245,158,11,.12); color: var(--accent); border-color: rgba(245,158,11,.3); }
+
+    /* ---------- 入场动画 ---------- */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s, transform .6s; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 24px; border-top: 1px solid var(--line); }
+
+    /* ---------- 移动端 ---------- */
+    @media (max-width: 820px) {
+      .container { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      header.hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==================== 顶部导航 ==================== -->
+  <nav>
+    <div class="brand">王佳铃<span>·</span>简历</div>
+    <ul class="nav-links">
+      <li><a href="#about">关于</a></li>
+      <li><a href="#education">教育</a></li>
+      <li><a href="#experience">经历</a></li>
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#awards">荣誉</a></li>
+    </ul>
+    <button id="themeBtn" title="切换主题" aria-label="切换明暗主题">🌙</button>
+  </nav>
+
+  <!-- ==================== Hero 区 ==================== -->
+  <header class="hero">
+    <div class="avatar">王</div>
+    <h1>王佳铃</h1>
+    <p class="subtitle">新闻传播 × AI 应用 · 首都经济贸易大学 本科在读</p>
+    <div class="tags">
+      <span class="tag">📰 新闻传播</span>
+      <span class="tag">🤖 人工智能训练师（初/高级）</span>
+      <span class="tag">🎬 视频剪辑</span>
+      <span class="tag">🐍 Python</span>
+    </div>
+  </header>
+
+  <!-- ==================== 主内容 ==================== -->
+  <main class="container">
+
+    <!-- ---------- 左栏 ---------- -->
+    <aside>
+
+      <!-- 基本信息 -->
+      <section class="card reveal" id="about">
+        <h2>基本信息</h2>
+        <div class="info-item"><span class="icon">📍</span> 城市：北京</div>
+        <div class="info-item"><span class="icon">🏫</span> 首都经济贸易大学</div>
+        <div class="info-item"><span class="icon">🎂</span> 18 岁 · 女</div>
+        <div class="info-item">
+          <span class="icon">📱</span>
+          <a href="tel:13975546082" class="phone">13975546082</a>
+        </div>
+        <div class="info-item">
+          <span class="icon">✉️</span>
+          <a href="mailto:jianshan4567@qq.com">jianshan4567@qq.com</a>
+        </div>
+      </section>
+
+      <!-- 专业技能 -->
+      <section class="card reveal">
+        <h2>专业技能</h2>
+
+        <div class="skill-bar">
+          <div class="name"><span>AI 工具应用（内容生成/润色/规划）</span><span>90%</span></div>
+          <div class="track"><div class="fill" data-w="90%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <div class="name"><span>视频剪辑</span><span>70%</span></div>
+          <div class="track"><div class="fill" data-w="70%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <div class="name"><span>Python</span><span>55%</span></div>
+          <div class="track"><div class="fill" data-w="55%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <div class="name"><span>普通话</span><span>80%</span></div>
+          <div class="track"><div class="fill" data-w="80%"></div></div>
+        </div>
+
+        <div class="skill-bar">
+          <div class="name"><span>英语（高考 115 分）</span><span>75%</span></div>
+          <div class="track"><div class="fill" data-w="75%"></div></div>
+        </div>
+      </section>
+
+      <!-- 证书 -->
+      <section class="card reveal">
+        <h2>证书</h2>
+        <div class="badges">
+          <span class="badge hl">初级人工智能训练师</span>
+          <span class="badge hl">高级人工智能训练师</span>
+        </div>
+      </section>
+
+      <!-- 特长爱好 -->
+      <section class="card reveal">
+        <h2>特长与爱好</h2>
+        <div class="badges">
+          <span class="badge">🍞 烘焙</span>
+          <span class="badge">🎬 剪辑</span>
+          <span class="badge">🤖 AI 工具</span>
+          <span class="badge">🗣 辩论</span>
+          <span class="badge">🏃 长跑/远足</span>
+          <span class="badge">🔭 观察记录</span>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- ---------- 右栏 ---------- -->
+    <section>
+
+      <!-- 关于我 -->
+      <div class="card reveal">
+        <h2>关于我</h2>
+        <p style="font-size:14px;color:var(--muted)">
+          新闻传播学类大一学生，喜欢用内容讲好故事，也乐于拥抱新技术。擅长把 AI 工具
+          用在内容创作、旅行规划与文案润色中，是「会写内容 + 会用 AI」的复合型选手。
+          多年担任课代表与班干部，责任心强；热爱烘焙、公益与记录生活。
+        </p>
+        <!-- TODO（投实习时修改）：把上面最后一句改成更职业化的表达，
+             例如：「希望将内容策划与 AI 应用能力带入团队，创造实际价值。」 -->
+      </div>
+
+      <!-- 教育背景 -->
+      <div class="card reveal" id="education">
+        <h2>教育背景</h2>
+        <div class="exp">
+          <h3>首都经济贸易大学 · 新闻传播学类（本科在读）</h3>
+          <div class="time">2025.09 — 至今</div>
+          <p>主修新闻传播方向，正在培养采写、编辑与新媒体运营能力。</p>
+        </div>
+      </div>
+
+      <!-- 实践经历 -->
+      <div class="card reveal" id="experience">
+        <h2>实践经历</h2>
+
+        <div class="exp">
+          <h3>美芝家烘焙坊（家庭店铺）· 兼职店员与烘焙助手</h3>
+          <div class="time">在校期间 / 假期</div>
+          <p>负责面包、蛋糕、月饼的售卖与制作。锻炼了与顾客沟通、服务意识、时间管理
+             以及从原料到成品的完整流程把控能力。</p>
+        </div>
+
+        <div class="exp">
+          <h3>高中 100 周年校庆 · 志愿者</h3>
+          <div class="time">高中阶段</div>
+          <p>为参加中考的学弟学妹指路、引导寻找考场，保障校庆与考试期间秩序，提升了
+             沟通协调与应变能力。</p>
+        </div>
+
+        <div class="exp">
+          <h3>班级干部 · 英语/历史课代表、劳动委员、小组组长</h3>
+          <div class="time">初高中阶段</div>
+          <p>长期承担课代表与班委工作，组织小组学习、协调班级劳动，责任心与组织能力
+             得到师生一致认可。</p>
+        </div>
+
+        <div class="exp">
+          <h3>公益与志愿服务</h3>
+          <div class="time">持续参与</div>
+          <p>参与腾讯九九公益、学校公共卫生打扫（操场、环山跑道落叶清理）等活动，
+             获「九九公益先进个人」称号。</p>
+        </div>
+      </div>
+
+      <!-- 项目经历（核心亮点：新闻 × AI） -->
+      <div class="card reveal" id="projects">
+        <h2>项目经历</h2>
+
+        <div class="exp">
+          <h3>「新闻 × AI」内容创作实践</h3>
+          <div class="time">个人项目</div>
+          <p>
+            将新闻传播专业素养与 AI 工具深度结合，系统完成多项内容任务：旅行路线规划、
+            科普内容生成、情绪疏导对话、专业文案润色与语言包装。能够对 AI 输出质量进行
+            判断与调优，体现「内容策划 + 技术应用」的交叉能力。
+          </p>
+        </div>
+
+        <div class="exp">
+          <h3>Python 动态爱心</h3>
+          <div class="time">个人项目</div>
+          <p>
+            独立完成一个可运行的动态图形程序，涉及循环、随机数、颜色渐变与动画帧控制，
+            锻炼了将数学逻辑转化为可视化效果的能力。
+          </p>
+        </div>
+
+        <div class="exp">
+          <h3>视频剪辑 · 基础剪辑创作</h3>
+          <div class="time">个人项目</div>
+          <p>掌握基础剪辑技能，可完成短视频的粗剪、字幕与简单包装。
+             <!-- TODO: 如需展示作品，可在部署后将链接补充在这里。 -->
+          </p>
+        </div>
+      </div>
+
+      <!-- 荣誉奖项（分类展示） -->
+      <div class="card reveal" id="awards">
+        <h2>荣誉奖项</h2>
+
+        <div class="award-group">
+          <h3>🏆 学业综合</h3>
+          <div class="badges">
+            <span class="badge hl">多次三好学生</span>
+            <span class="badge hl">学习标兵</span>
+            <span class="badge hl">奖学金累计 5000+ 元</span>
+            <span class="badge">校级数学素养大赛二等奖</span>
+          </div>
+        </div>
+
+        <div class="award-group">
+          <h3>🗣 语言表达</h3>
+          <div class="badges">
+            <span class="badge hl">校级英语演讲大赛一等奖</span>
+            <span class="badge hl">英语“讲好中国故事”一等奖</span>
+            <span class="badge">校级经典诵读决赛二等奖</span>
+            <span class="badge">辩论赛参赛（“幸福与压力”）</span>
+          </div>
+        </div>
+
+        <div class="award-group">
+          <h3>🎨 艺术文体</h3>
+          <div class="badges">
+            <span class="badge">校级合唱/艺术节合唱一等奖</span>
+            <span class="badge hl">心理治愈漫画“遇见白猫”一等奖</span>
+            <span class="badge">校级足球比赛一等奖</span>
+            <span class="badge">高二女子 4×100 接力第四名</span>
+            <span class="badge">远足步行 24 千米以上</span>
+          </div>
+        </div>
+
+        <div class="award-group">
+          <h3>🚀 科创与综合</h3>
+          <div class="badges">
+            <span class="badge">“未来太空车”竞赛二等奖</span>
+            <span class="badge">“歌曲中的科学”郴州赛区三等奖</span>
+            <span class="badge">韶山研学活动优秀学员</span>
+            <span class="badge hl">腾讯九九公益先进个人</span>
+            <span class="badge">优秀劳动委员</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 更多亮点 -->
+      <div class="card reveal">
+        <h2>更多亮点</h2>
+        <p style="font-size:14px;color:var(--muted)">
+          亲手参与母鸡孵化与照顾、坚持观察记录月相、辅导小学/初中/高中学生作业，
+          在校园卖废品活动中提供全班一年的麻袋物资——这些小事体现了我对生活的好奇心、
+          动手能力与乐于助人的品质。
+        </p>
+      </div>
+
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> 王佳铃 · 个人在线简历 · 浪尖儿社区训练营作品
+  </footer>
+
+  <!-- ==================== 脚本 ==================== -->
+  <script>
+    // ---------- 1. 主题切换 ----------
+    const themeBtn = document.getElementById('themeBtn');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark');
+      themeBtn.textContent = '☀️';
+    }
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // ---------- 2. 滚动入场动画 ----------
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ---------- 3. 技能条动画（进入视口时填充） ----------
+    const bars = document.querySelectorAll('.fill');
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.width = entry.target.dataset.w;
+          barObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    bars.forEach(b => barObserver.observe(b));
+
+    // ---------- 4. 页脚年份 ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
