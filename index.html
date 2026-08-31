@@ -1,1 +1,1088 @@
-https://share.my.cn/claw/file_preview?qwcontainer=qk&viewer_type=html&file_name=%E7%8E%8B%E4%BD%B3%E9%93%83%E4%B8%AA%E4%BA%BA%E7%AE%80%E5%8E%86.html&html_fid=d9ff1b4326cf49a4bdc1101a19580dee&uc_biz_str=OPT%3ATITLE_BAR_ENABLE%400%7COPT%3AIMMERSIVE%401%7COPT%3ABACK_BTN_STYLE%400%7COPT%3ATOOLBAR_STYLE%400%7COPT%3AW_PAGE_REFRESH%400%7COPT%3AS_DISABLE_INPUT_ACCESSORY%401%7COPT%3AFORCE_USER_SELECT%400&qk_doc_params=%7B%22resize_ios_webview%22%3A2%7D
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- ============================================================
+  页面标题与 SEO 描述
+============================================================ -->
+<title>王佳铃 · 新闻传播学 × AI 探索者 | 个人简历</title>
+<meta name="description" content="王佳铃的个人简历：首都经济贸易大学新闻传播学在读，持有初/高级人工智能训练师认证，热衷用 AI 解决真实问题。" />
+
+<!-- Tailwind CSS（CDN） -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- FontAwesome 6 图标库（CDN） -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<!-- Google Fonts：
+     Playfair Display —— 拉丁文衬线标题（编辑/杂志感）
+     Noto Serif SC —— 中文衬线标题，与拉丁衬线气质统一
+     Noto Sans SC —— 中文正文
+     JetBrains Mono —— 等宽字体，用于标签、编号、日期 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<script>
+/* Tailwind 主题扩展：整套配色收拢为设计令牌，换肤只改这里 */
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        cream:   '#f3f0e7', // 主背景：暖米白（纸张感）
+        creamd:  '#eae6d8', // 卡片底：深一档的米色
+        forest:  '#003021', // 主色/正文：森林墨绿
+        pine:    '#47604f', // 次要文字：灰绿（同色系降饱和）
+        ember:   '#ff6138', // 强调色：橙红
+        embers:  '#ff8a66', // 强调色弱化变体
+      },
+      fontFamily: {
+        disp: ['"Playfair Display"', '"Noto Serif SC"', 'serif'],  // 标题（衬线）
+        body: ['"Noto Sans SC"', '"Playfair Display"', 'sans-serif'], // 正文
+        mono: ['"JetBrains Mono"', 'monospace'],                   // 等宽
+      },
+    },
+  },
+};
+</script>
+
+<style>
+/* ============================================================
+   全局基础
+============================================================ */
+html { scroll-behavior: smooth; }
+body {
+  background-color: #f3f0e7;
+  color: #003021;
+  font-family: 'Noto Sans SC', 'Playfair Display', sans-serif;
+  overflow-x: hidden;
+}
+::selection { background: #ff6138; color: #f3f0e7; } /* 选中文字橙红底 */
+
+/* 滚动条与整体纸张质感统一 */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #eae6d8; }
+::-webkit-scrollbar-thumb { background: #00302166; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #ff6138; }
+
+/* 纸张噪点纹理：用超小 SVG data-URI 平铺，成本几乎为零但质感立现 */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .04 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+main, header, footer, nav { position: relative; z-index: 1; }
+
+/* ============================================================
+   Hero 动态背景：流动的墨绿/橙红辉光 + 漂浮墨点画布
+============================================================ */
+.blob {
+  position: absolute; border-radius: 9999px;
+  filter: blur(80px); will-change: transform; pointer-events: none;
+}
+.blob-1 { width: 44vw; height: 44vw; background: rgba(0,72,52,.16);  top: -14%; left: -10%; }
+.blob-2 { width: 36vw; height: 36vw; background: rgba(255,97,56,.14); bottom: -12%; right: -8%; }
+.blob-3 { width: 24vw; height: 24vw; background: rgba(0,48,33,.10);  top: 38%; left: 44%; }
+
+#particle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* Hero 滚动视差：JS 写 --plax / --plax-fade 两个自定义属性 */
+#hero-inner {
+  transform: translateY(var(--plax, 0px));
+  opacity: calc(1 - var(--plax-fade, 0));
+  will-change: transform, opacity;
+}
+
+/* ============================================================
+   滚动进场动画（Fade-in Up）+ stagger 延迟
+============================================================ */
+.reveal {
+  opacity: 0; transform: translateY(36px);
+  transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal[data-delay="1"] { transition-delay: .12s; }
+.reveal[data-delay="2"] { transition-delay: .24s; }
+.reveal[data-delay="3"] { transition-delay: .36s; }
+
+/* 区块小标签：橙红短线 + 等宽大写英文 */
+.section-marker {
+  display: inline-flex; align-items: center; gap: .75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
+  color: #ff6138;
+}
+.section-marker::before { content: ''; width: 2.2rem; height: 2px; background: #ff6138; }
+
+/* ============================================================
+   链接悬停：橙色下划线填充（杂志式的克制交互）
+============================================================ */
+.u-link { position: relative; display: inline-block; }
+.u-link .fill {
+  position: absolute; left: 0; bottom: -4px;
+  width: 0; height: 3px; background: #ff6138;
+  transition: width .35s cubic-bezier(.22,.61,.36,1);
+}
+.u-link:hover .fill { width: 100%; }
+.u-link:hover { color: #ff6138; }
+.u-link { transition: color .3s; }
+
+/* ============================================================
+   技能进度条
+============================================================ */
+.skill-bar { height: 6px; border-radius: 9999px; background: rgba(0,48,33,.12); overflow: hidden; }
+.skill-bar > i {
+  display: block; height: 100%; width: 0; border-radius: inherit;
+  background: linear-gradient(90deg, #003021, #ff6138);
+  transition: width 1.2s cubic-bezier(.22,.61,.36,1);
+}
+
+/* 技能标签云：细描边胶囊，悬停反白浮起 */
+.skill-tag {
+  font-family: 'JetBrains Mono', monospace;
+  padding: .4rem 1rem; border-radius: 9999px;
+  border: 1.5px solid rgba(0,48,33,.3); color: #003021;
+  transition: all .3s; cursor: default; background: transparent;
+}
+.skill-tag:hover {
+  background: #003021; color: #f3f0e7; border-color: #003021;
+  transform: translateY(-3px);
+}
+
+/* ============================================================
+   卡片通用：白米底 + 细描边，悬停上浮 + 橙色投影
+============================================================ */
+.card {
+  background: #fbf9f3;
+  border: 1px solid rgba(0,48,33,.12);
+  transition: transform .4s cubic-bezier(.22,.61,.36,1), box-shadow .4s, border-color .4s;
+}
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255,97,56,.6);
+  box-shadow: 0 20px 50px -20px rgba(0,48,33,.35);
+}
+.card:hover .card-index { color: #ff6138; }
+
+/* ============================================================
+   时间轴：左侧竖线 + 橙红圆点，悬停点亮
+============================================================ */
+.timeline-item { position: relative; padding-left: 2.4rem; }
+.timeline-item::before {
+  content: ''; position: absolute; left: 7px; top: 10px; bottom: -30px;
+  width: 1.5px; background: rgba(0,48,33,.18);
+}
+.timeline-item:last-child::before { display: none; }
+.timeline-item::after {
+  content: ''; position: absolute; left: 2px; top: 5px;
+  width: 12px; height: 12px; border-radius: 9999px;
+  background: #f3f0e7; border: 2.5px solid #ff6138;
+  transition: background .3s, transform .3s;
+}
+.timeline-item:hover::after { background: #ff6138; transform: scale(1.25); }
+
+/* ============================================================
+   荣誉手风琴：JS 控制 max-height 实现平滑展开
+============================================================ */
+.acc-body { max-height: 0; overflow: hidden; transition: max-height .5s cubic-bezier(.22,.61,.36,1); }
+.acc-item.open .acc-body { /* max-height 由 JS 按内容高度写入 */ }
+.acc-item .acc-icon { transition: transform .4s; }
+.acc-item.open .acc-icon { transform: rotate(45deg); } /* 加号旋转成 × */
+.acc-item.open .acc-head { color: #ff6138; }
+
+/* ============================================================
+   头像虚线光环
+============================================================ */
+.avatar-ring {
+  position: absolute; inset: -14px;
+  border: 1.5px dashed rgba(255,97,56,.6);
+  border-radius: 9999px;
+  animation: spin 24s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 导航栏滚动后的毛玻璃（浅色版） */
+#navbar { transition: background .4s, backdrop-filter .4s, border-color .4s; border-bottom: 1px solid transparent; }
+#navbar.scrolled {
+  background: rgba(243,240,231,.8);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: rgba(0,48,33,.1);
+}
+
+/* 返回顶部 */
+#back-top { opacity: 0; pointer-events: none; transition: opacity .4s, transform .4s; transform: translateY(12px); }
+#back-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+/* 移动端菜单：clip-path 圆形展开 */
+#mobile-menu { transition: clip-path .5s cubic-bezier(.22,.61,.36,1); clip-path: circle(0% at calc(100% - 3rem) 3rem); }
+#mobile-menu.open { clip-path: circle(150% at calc(100% - 3rem) 3rem); }
+
+/* 图片灯箱 */
+#lightbox { transition: opacity .35s; }
+
+/* 打字机光标 */
+.caret { animation: blink 1s step-end infinite; color: #ff6138; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* 无障碍：尊重“减少动态效果”偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transition: none; opacity: 1; transform: none; }
+  .avatar-ring { animation: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+
+<body class="antialiased font-body">
+
+<!-- ============================================================
+     导航栏（吸顶 + 毛玻璃）
+============================================================ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+    <!-- Logo：姓氏 + 橙色句点 -->
+    <a href="#hero" class="font-disp font-bold text-lg tracking-tight">
+      王佳铃<span class="text-ember">.</span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm text-pine">
+      <a href="#about"    class="hover:text-forest transition-colors duration-300">关于我</a>
+      <a href="#ainotes"  class="hover:text-forest transition-colors duration-300">AI 探索笔记</a>
+      <a href="#portfolio" class="hover:text-forest transition-colors duration-300">作品展示</a>
+      <a href="#experience" class="hover:text-forest transition-colors duration-300">经历</a>
+      <a href="#skills"   class="hover:text-forest transition-colors duration-300">技能</a>
+      <a href="#honors"   class="hover:text-forest transition-colors duration-300">荣誉</a>
+      <a href="#contact"  class="px-4 py-1.5 rounded-full bg-forest text-cream font-medium hover:bg-ember transition-colors duration-300">联系我</a>
+    </div>
+    <button id="menu-btn" class="md:hidden text-forest text-xl p-2" aria-label="打开菜单">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- 移动端全屏菜单 -->
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-cream/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-7 text-2xl font-disp">
+  <a href="#about"     class="text-forest">关于我</a>
+  <a href="#ainotes"   class="text-forest">AI 探索笔记</a>
+  <a href="#portfolio" class="text-forest">作品展示</a>
+  <a href="#experience" class="text-forest">经历</a>
+  <a href="#skills"    class="text-forest">技能</a>
+  <a href="#honors"    class="text-forest">荣誉</a>
+  <a href="#contact"   class="text-ember">联系我</a>
+</div>
+
+<!-- ============================================================
+     Hero Section
+     非对称布局 + 漂浮墨点画布 + 三层辉光视差
+============================================================ -->
+<header id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+  <div class="blob blob-1" data-depth="0.030"></div>
+  <div class="blob blob-2" data-depth="0.055"></div>
+  <div class="blob blob-3" data-depth="0.085"></div>
+  <canvas id="particle-canvas"></canvas>
+
+  <div id="hero-inner" class="relative z-10 max-w-5xl mx-auto px-6 w-full pt-24 pb-16
+                              grid md:grid-cols-5 gap-12 items-center">
+    <!-- 左侧文字区 -->
+    <div class="md:col-span-3">
+      <p class="reveal visible section-marker mb-6">Résumé / 个人简历</p>
+      <h1 class="reveal visible font-disp font-black leading-[1.05] tracking-tight
+                 text-5xl sm:text-6xl lg:text-7xl" data-delay="1">
+        王佳铃<br />
+        <span class="text-pine text-3xl sm:text-4xl lg:text-5xl font-bold">Wang Jialing</span>
+      </h1>
+      <!-- 身份徽章 -->
+      <p class="reveal visible mt-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full
+                border border-forest/25 text-sm text-forest bg-creamd/60" data-delay="2">
+        <i class="fa-solid fa-graduation-cap text-ember"></i>
+        首都经济贸易大学 · 新闻传播学（本科在读）
+      </p>
+      <!-- 一句话 Slogan：打字机循环 -->
+      <p class="reveal visible mt-5 font-disp text-xl sm:text-2xl font-bold text-forest" data-delay="2">
+        <span id="typed-slogan">让 AI 有温度，让文字有力量。</span><span class="caret">▌</span>
+      </p>
+      <p class="reveal visible mt-4 text-pine max-w-md leading-relaxed" data-delay="3">
+        新闻传播学子 × 认证 AI 训练师。擅长用文字记录世界，
+        也热衷于用人工智能解决真实生活里的问题——兼具人文素养与极客精神。
+      </p>
+      <!-- 联系方式速览 -->
+      <div class="reveal visible mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-pine" data-delay="3">
+        <a href="tel:13975546082" class="flex items-center gap-2 hover:text-ember transition-colors">
+          <i class="fa-solid fa-phone text-ember"></i> 139 7554 6082
+        </a>
+        <a href="mailto:jianshan4567@qq.com" class="flex items-center gap-2 hover:text-ember transition-colors">
+          <i class="fa-solid fa-envelope text-ember"></i> jianshan4567@qq.com
+        </a>
+        <span class="flex items-center gap-2">
+          <i class="fa-solid fa-location-dot text-ember"></i> 北京
+        </span>
+      </div>
+    </div>
+
+    <!-- 右侧头像区 -->
+    <div class="md:col-span-2 flex justify-center reveal visible" data-delay="2">
+      <div class="relative w-52 h-52 sm:w-64 sm:h-64">
+        <div class="avatar-ring"></div>
+        <!-- 【替换点 A】头像：把 src 换成你的照片文件路径（建议正方形、浅色背景）。
+             例如 src="avatar.jpg"，并把照片与本 HTML 放在同一文件夹。
+             当前为占位图，保证无照片时也能正常显示 -->
+        <img src="tou.jpg" width='256' height='256'%3E%3Crect width='256' height='256' fill='%23eae6d8'/%3E%3Ccircle cx='128' cy='100' r='42' fill='%2347604f'/%3E%3Cellipse cx='128' cy='205' rx='70' ry='50' fill='%2347604f'/%3E%3C/svg%3E"
+             alt="王佳铃的照片"
+             class="w-full h-full object-cover rounded-full border-2 border-forest/10 shadow-xl" />
+      </div>
+    </div>
+  </div>
+
+  <a href="#about" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-pine text-xs font-mono
+                          flex flex-col items-center gap-2 hover:text-ember transition-colors">
+    <span>SCROLL</span>
+    <i class="fa-solid fa-chevron-down animate-bounce"></i>
+  </a>
+</header>
+
+<main>
+
+<!-- ============================================================
+     01 关于我 —— 窄栏编辑排版 + 关键数据
+============================================================ -->
+<section id="about" class="py-24 md:py-32">
+  <div class="max-w-[680px] mx-auto px-6">
+    <p class="reveal section-marker mb-4">About / 01</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-8" data-delay="1">关于我</h2>
+    <p class="reveal text-pine leading-loose text-lg" data-delay="2">
+      作为新闻传播学专业的学生，我具备出色的文字功底、信息检索与内容策划能力。
+      不仅拥有<span class="text-forest font-medium">初级和高级人工智能训练师认证</span>，
+      还能熟练运用 Python 与 AI 工具解决实际问题——旅行规划、情绪疏导、小游戏开发都不在话下。
+      在过往经历中，无论是担任班级职务、参与大型志愿服务，还是在烘焙坊的基层兼职，
+      我都做到了尽职尽责、细致入微。我热衷跨界探索，期待在实习岗位上发挥综合优势。
+    </p>
+    <!-- 关键数据条 -->
+    <div class="reveal mt-12 grid grid-cols-3 gap-4 text-center" data-delay="3">
+      <div>
+        <p class="font-disp text-3xl font-bold text-ember"><span class="counter" data-target="2">0</span>项</p>
+        <p class="text-pine text-sm mt-1">AI 训练师认证</p>
+      </div>
+      <div>
+        <p class="font-disp text-3xl font-bold text-ember"><span class="counter" data-target="10">0</span>+</p>
+        <p class="text-pine text-sm mt-1">各级奖项荣誉</p>
+      </div>
+      <div>
+        <p class="font-disp text-3xl font-bold text-ember"><span class="counter" data-target="24">0</span>km</p>
+        <p class="text-pine text-sm mt-1">远足徒步纪录</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 AI 探索笔记 —— 核心亮点，博客列表式排版
+============================================================ -->
+<section id="ainotes" class="py-24 md:py-32 bg-forest text-cream">
+  <div class="max-w-[680px] mx-auto px-6">
+    <p class="reveal section-marker mb-4">AI Notes / 02</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-4" data-delay="1">AI 探索笔记</h2>
+    <p class="reveal text-cream/60 mb-12 leading-relaxed" data-delay="2">
+      这是我最与众不同的地方——我不只"会用"AI，更喜欢记录用它解决真实问题的过程。
+    </p>
+
+    <div class="space-y-6">
+      <!-- 笔记卡片：博客条目式，左侧序号 + 右侧内容 -->
+      <!-- 【替换点 B】笔记内容：可以把描述换成你自己的真实使用心得与成果截图链接 -->
+      <article class="card reveal rounded-2xl p-6 sm:p-8 !bg-[#0a4232] !border-cream/10 group">
+        <div class="flex items-start gap-5">
+          <span class="card-index font-mono text-sm text-cream/40 transition-colors pt-1">N.01</span>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-3 mb-2">
+              <span class="font-mono text-xs px-2.5 py-1 rounded bg-ember/15 text-embers">行程规划</span>
+              <span class="font-mono text-xs text-cream/40">2025 · 实践</span>
+            </div>
+            <h3 class="font-disp text-xl sm:text-2xl font-bold text-cream group-hover:text-embers transition-colors">
+              用 AI 规划一场说走就走的旅行
+            </h3>
+            <p class="text-cream/60 text-sm leading-relaxed mt-3">
+              通过多轮对话让 AI 综合预算、天气、交通与个人偏好，生成可落地的每日行程表；
+              再用表格工具二次校验，最终产出一版"比攻略网站更懂我"的定制路线。
+            </p>
+            <p class="font-mono text-xs text-cream/40 mt-4">
+              <i class="fa-solid fa-wand-magic-sparkles text-ember mr-1"></i>Prompt 设计 · 信息校验 · 工具协同
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal rounded-2xl p-6 sm:p-8 !bg-[#0a4232] !border-cream/10 group" data-delay="1">
+        <div class="flex items-start gap-5">
+          <span class="card-index font-mono text-sm text-cream/40 transition-colors pt-1">N.02</span>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-3 mb-2">
+              <span class="font-mono text-xs px-2.5 py-1 rounded bg-ember/15 text-embers">情绪处理</span>
+              <span class="font-mono text-xs text-cream/40">2025 · 实践</span>
+            </div>
+            <h3 class="font-disp text-xl sm:text-2xl font-bold text-cream group-hover:text-embers transition-colors">
+              把 AI 当作"情绪树洞"的实验
+            </h3>
+            <p class="text-cream/60 text-sm leading-relaxed mt-3">
+              结合新闻传播学的共情视角，设计了一套"情绪疏导提示词"，
+              让 AI 先倾听、再提问、最后给出认知行为层面的建议——技术也可以很温柔。
+            </p>
+            <p class="font-mono text-xs text-cream/40 mt-4">
+              <i class="fa-solid fa-heart text-ember mr-1"></i>共情设计 · 心理学视角 · 人文关怀
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal rounded-2xl p-6 sm:p-8 !bg-[#0a4232] !border-cream/10 group" data-delay="2">
+        <div class="flex items-start gap-5">
+          <span class="card-index font-mono text-sm text-cream/40 transition-colors pt-1">N.03</span>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-3 mb-2">
+              <span class="font-mono text-xs px-2.5 py-1 rounded bg-ember/15 text-embers">动手开发</span>
+              <span class="font-mono text-xs text-cream/40">2025 · 作品</span>
+            </div>
+            <h3 class="font-disp text-xl sm:text-2xl font-bold text-cream group-hover:text-embers transition-colors">
+              AI 辅助开发小游戏与个人网站
+            </h3>
+            <p class="text-cream/60 text-sm leading-relaxed mt-3">
+              从"完全不会写代码"到用 AI 结对编程做出可玩的小游戏，
+              再到亲手搭建这份在线简历——你正在浏览的页面，就是这条笔记的成果。
+            </p>
+            <!-- 【替换点 C】小游戏链接：把 href 换成你的小游戏地址即可点亮此按钮 -->
+            <a href="#" class="inline-flex items-center gap-2 mt-4 font-mono text-xs text-embers hover:text-ember transition-colors">
+              <i class="fa-solid fa-gamepad"></i> 试玩小游戏 <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 作品展示 —— 支持图片画廊 / 视频嵌入 / 外部链接的网格
+============================================================ -->
+<section id="portfolio" class="py-24 md:py-32">
+  <div class="max-w-5xl mx-auto px-6">
+    <p class="reveal section-marker mb-4">Portfolio / 03</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-12" data-delay="1">作品展示</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- 摄影画廊：点击缩略图可打开灯箱放大查看 -->
+      <div class="card reveal rounded-2xl p-6 sm:p-8">
+        <div class="flex items-center gap-3 mb-1">
+          <i class="fa-solid fa-camera text-ember text-lg"></i>
+          <h3 class="font-disp text-xl sm:text-2xl font-bold">摄影作品</h3>
+        </div>
+        <p class="text-pine text-sm mb-6">镜头里的光影与人间烟火，点击可放大浏览。</p>
+        <div class="grid grid-cols-2 gap-3">
+          <!-- 【替换点 D】摄影作品：把 4 个 src 换成你的照片路径（如 photo1.jpg）。
+               灯箱会自动读取同一张图的大图版本 -->
+          <img class="gallery-img rounded-lg w-full h-32 sm:h-40 object-cover cursor-zoom-in hover:opacity-85 transition-opacity"
+               alt="摄影作品 1"
+               src="ying.jpg" width='400' height='300'%3E%3Crect width='400' height='300' fill='%23dfd9c6'/%3E%3Ccircle cx='320' cy='70' r='36' fill='%23ff6138' opacity='.7'/%3E%3Cpath d='M0 220 L120 120 L220 200 L400 90 L400 300 L0 300 Z' fill='%2347604f' opacity='.55'/%3E%3C/svg%3E" />
+          <img class="gallery-img rounded-lg w-full h-32 sm:h-40 object-cover cursor-zoom-in hover:opacity-85 transition-opacity"
+               alt="摄影作品 2"
+               src="ying5.jpg" width='400' height='300'%3E%3Crect width='400' height='300' fill='%23cfd8cd'/%3E%3Crect x='60' y='60' width='120' height='180' fill='%23003021' opacity='.5'/%3E%3Crect x='210' y='110' width='130' height='130' fill='%23ff6138' opacity='.45'/%3E%3C/svg%3E" />
+          <img class="gallery-img rounded-lg w-full h-32 sm:h-40 object-cover cursor-zoom-in hover:opacity-85 transition-opacity"
+               alt="摄影作品 3"
+               src="ying3.jpg" width='400' height='300'%3E%3Crect width='400' height='300' fill='%23e8dcc8'/%3E%3Ccircle cx='130' cy='150' r='70' fill='%23ff8a66' opacity='.5'/%3E%3Ccircle cx='260' cy='140' r='50' fill='%23003021' opacity='.45'/%3E%3C/svg%3E" />
+          <img class="gallery-img rounded-lg w-full h-32 sm:h-40 object-cover cursor-zoom-in hover:opacity-85 transition-opacity"
+               alt="摄影作品 4"
+               src="ying6.jpg" width='400' height='300'%3E%3Crect width='400' height='300' fill='%23d8d3c2'/%3E%3Cpath d='M0 180 Q100 100 200 180 T400 180 L400 300 L0 300 Z' fill='%2347604f' opacity='.5'/%3E%3C/svg%3E" />
+        </div>
+      </div>
+
+      <!-- 视频剪辑作品：预留 16:9 嵌入位 -->
+      <div class="card reveal rounded-2xl p-6 sm:p-8 flex flex-col" data-delay="1">
+        <div class="flex items-center gap-3 mb-1">
+          <i class="fa-solid fa-clapperboard text-ember text-lg"></i>
+          <h3 class="font-disp text-xl sm:text-2xl font-bold">视频剪辑</h3>
+        </div>
+        <p class="text-pine text-sm mb-6">校园活动纪实与创意短片。</p>
+        <!-- 【替换点 E】视频嵌入：把下面的占位 div 整体替换为视频代码——
+             B站：<iframe src="//player.bilibili.com/player.html?bvid=你的BV号" ...></iframe>
+             本地视频：<video src="你的视频.mp4" controls class="w-full rounded-lg"></video> -->
+        <div class="rounded-lg bg-forest aspect-video flex flex-col items-center justify-center gap-3 text-cream/50">
+          <i class="fa-solid fa-circle-play text-4xl text-ember"></i>
+          <span class="font-mono text-xs tracking-widest">VIDEO EMBED SLOT · 16:9</span>
+        </div>
+        <p class="font-mono text-xs text-pine mt-4">Premiere / 剪映 · 调色 · 字幕包装</p>
+      </div>
+
+      <!-- 心理治愈漫画：横向通栏卡片 -->
+      <div class="card reveal rounded-2xl p-6 sm:p-8 md:col-span-2" data-delay="2">
+        <div class="grid sm:grid-cols-3 gap-6 items-center">
+          <div class="sm:col-span-2">
+            <div class="flex items-center gap-3 mb-1">
+              <i class="fa-solid fa-pen-nib text-ember text-lg"></i>
+              <h3 class="font-disp text-xl sm:text-2xl font-bold">治愈漫画《遇见白猫》</h3>
+            </div>
+            <p class="text-pine text-sm leading-relaxed mt-2">
+              校心理治愈漫画创作大赛<span class="text-ember font-medium">一等奖</span>作品。
+              用四格漫画讲述一只白猫与低落少年相互治愈的故事——
+              我相信艺术可以表达情感、传递治愈力量。
+            </p>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="skill-tag !text-xs !py-1 !px-3">原创编剧</span>
+              <span class="skill-tag !text-xs !py-1 !px-3">分镜绘制</span>
+              <span class="skill-tag !text-xs !py-1 !px-3">心理关怀</span>
+            </div>
+          </div>
+          <!-- 【替换点 F】漫画封面：把 src 换成你的漫画封面图路径 -->
+          <img class="gallery-img rounded-xl w-full h-44 object-cover cursor-zoom-in hover:opacity-85 transition-opacity"
+               alt="《遇见白猫》漫画封面"
+               src="man.jpg" width='400' height='300'%3E%3Crect width='400' height='300' fill='%23fbf9f3'/%3E%3Ccircle cx='200' cy='130' r='60' fill='%23eae6d8'/%3E%3Ccircle cx='178' cy='118' r='8' fill='%23003021'/%3E%3Ccircle cx='222' cy='118' r='8' fill='%23003021'/%3E%3Cpath d='M150 95 L160 60 L185 85 Z' fill='%23eae6d8'/%3E%3Cpath d='M250 95 L240 60 L215 85 Z' fill='%23eae6d8'/%3E%3Cpath d='M185 150 Q200 162 215 150' stroke='%23ff6138' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ctext x='200' y='255' font-size='26' text-anchor='middle' fill='%2347604f' font-family='serif'%3E遇见白猫%3C/text%3E%3C/svg%3E" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     04 经历时间轴 —— 垂直时间轴串联实践与校园经历
+============================================================ -->
+<section id="experience" class="py-24 md:py-32 bg-creamd/60">
+  <div class="max-w-[680px] mx-auto px-6">
+    <p class="reveal section-marker mb-4">Experience / 04</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-12" data-delay="1">经历时间轴</h2>
+
+    <div class="space-y-12">
+      <!-- 【替换点 G】时间轴条目：复制整个 .timeline-item 即可增删，日期填在 font-mono 行 -->
+      <div class="timeline-item reveal">
+        <p class="font-mono text-sm text-ember">2025.09 — 至今</p>
+        <h3 class="font-disp text-xl font-bold mt-1">首都经济贸易大学 · 新闻传播学</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          本科在读。系统训练新闻采写、内容策划与传播学理论，
+          同时自学 AI 工具与 Python，探索"人文 × 技术"的交叉地带。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">内容策划</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">AI 应用</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal" data-delay="1">
+        <p class="font-mono text-sm text-ember">兼职实践</p>
+        <h3 class="font-disp text-xl font-bold mt-1">美芝家烘焙坊 · 烘焙助理</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          负责面包、蛋糕、月饼等产品的制作与售卖，在快节奏环境中保持高效产出，
+          锻炼了良好的客户服务意识、抗压能力与严谨的实操规范。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">客户服务</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">抗压执行</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal" data-delay="2">
+        <p class="font-mono text-sm text-ember">志愿服务</p>
+        <h3 class="font-disp text-xl font-bold mt-1">高中百年校庆志愿者 & 中考引导员</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          参与校庆筹备与现场执行，负责来宾接待与秩序维护；
+          中考期间为学弟学妹提供考场指引与心理疏导，
+          展现了同理心、沟通能力与大型活动应急处理能力。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">活动统筹</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">心理疏导</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal" data-delay="3">
+        <p class="font-mono text-sm text-ember">公益环保</p>
+        <h3 class="font-disp text-xl font-bold mt-1">公益与环保实践</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          荣获"腾讯九九公益先进个人"；在废品回收活动中负责关键材料统筹、
+          发挥核心作用，培养了环保意识与项目管理能力。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">项目管理</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">社会责任</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal" data-delay="3">
+        <p class="font-mono text-sm text-ember">校园干部</p>
+        <h3 class="font-disp text-xl font-bold mt-1">班级核心干部 · 多项职务</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          历任英语课代表、历史课代表、劳动委员、小组组长。
+          作为劳动委员统筹操场及环山跑道卫生打扫并获评"优秀劳动委员"；
+          作为课代表负责作业辅导与师生沟通，锻炼了领导力与协作能力。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">组织协调</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">领导力</span>
+        </div>
+      </div>
+
+      <div class="timeline-item reveal" data-delay="3">
+        <p class="font-mono text-sm text-ember">思辨表达</p>
+        <h3 class="font-disp text-xl font-bold mt-1">校级辩论赛 · 辩手</h3>
+        <p class="text-pine mt-2 leading-relaxed">
+          围绕"幸福与压力""金钱与热爱"等社会热点议题展开深度思考与逻辑推演，
+          提升了批判性思维与公众演讲能力。
+        </p>
+        <div class="flex flex-wrap gap-2 mt-3">
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">批判性思维</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded bg-forest/8 border border-forest/15 text-pine">公众表达</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 技能标签云 —— 进度条 + 标签云双形态
+============================================================ -->
+<section id="skills" class="py-24 md:py-32">
+  <div class="max-w-[680px] mx-auto px-6">
+    <p class="reveal section-marker mb-4">Skills / 05</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-12" data-delay="1">技能图谱</h2>
+
+    <!-- 核心能力进度条 -->
+    <div class="space-y-7">
+      <!-- 【替换点 H】技能熟练度：修改 data-value（百分比）与右侧文字即可 -->
+      <div class="reveal">
+        <div class="flex justify-between mb-2 text-sm">
+          <span class="font-medium">AI 工具应用 / Prompt 设计</span>
+          <span class="font-mono text-ember">90%</span>
+        </div>
+        <div class="skill-bar"><i data-value="90"></i></div>
+      </div>
+      <div class="reveal" data-delay="1">
+        <div class="flex justify-between mb-2 text-sm">
+          <span class="font-medium">文案撰写 / 公众表达</span>
+          <span class="font-mono text-ember">85%</span>
+        </div>
+        <div class="skill-bar"><i data-value="85"></i></div>
+      </div>
+      <div class="reveal" data-delay="2">
+        <div class="flex justify-between mb-2 text-sm">
+          <span class="font-medium">视频剪辑 / 摄影</span>
+          <span class="font-mono text-ember">70%</span>
+        </div>
+        <div class="skill-bar"><i data-value="70"></i></div>
+      </div>
+      <div class="reveal" data-delay="3">
+        <div class="flex justify-between mb-2 text-sm">
+          <span class="font-medium">Python 基础</span>
+          <span class="font-mono text-ember">60%</span>
+        </div>
+        <div class="skill-bar"><i data-value="60"></i></div>
+      </div>
+    </div>
+
+    <!-- 标签云：hover 反白浮起 -->
+    <!-- 【替换点 I】标签云：直接增删 <span class="skill-tag"> 即可 -->
+    <div class="reveal mt-12 flex flex-wrap gap-3" data-delay="2">
+      <span class="skill-tag text-sm">AI 训练师（初 / 高级）</span>
+      <span class="skill-tag text-sm">Python</span>
+      <span class="skill-tag text-sm">视频剪辑</span>
+      <span class="skill-tag text-sm">摄影</span>
+      <span class="skill-tag text-sm">辩论</span>
+      <span class="skill-tag text-sm">英语演讲</span>
+      <span class="skill-tag text-sm">经典诵读</span>
+      <span class="skill-tag text-sm">文案策划</span>
+      <span class="skill-tag text-sm">信息检索</span>
+      <span class="skill-tag text-sm">组织协调</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 荣誉折叠面板 —— 手风琴，保持页面清爽
+============================================================ -->
+<section id="honors" class="py-24 md:py-32 bg-creamd/60">
+  <div class="max-w-[680px] mx-auto px-6">
+    <p class="reveal section-marker mb-4">Honors / 06</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-4" data-delay="1">荣誉奖项</h2>
+    <p class="reveal text-pine mb-12" data-delay="2">奖项不少，折叠收纳——点击展开查看。</p>
+
+    <div class="reveal space-y-4" data-delay="2" id="accordion">
+      <!-- 【替换点 J】荣誉条目：在对应分组的 <ul> 里增删 <li> 即可 -->
+      <div class="acc-item card rounded-2xl overflow-hidden">
+        <button class="acc-head w-full flex items-center justify-between px-6 py-5 text-left font-disp font-bold text-lg transition-colors">
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-award text-ember"></i> 奖学金与荣誉称号
+          </span>
+          <span class="flex items-center gap-3">
+            <span class="font-mono text-xs text-pine">×3</span>
+            <i class="fa-solid fa-plus acc-icon text-pine"></i>
+          </span>
+        </button>
+        <div class="acc-body px-6">
+          <ul class="pb-6 space-y-3 text-pine text-sm leading-relaxed">
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>累计获得小学至高中奖学金超 5000 元</li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>多次荣获"三好学生""学习标兵"称号</li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>获评"优秀劳动委员"</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item card rounded-2xl overflow-hidden">
+        <button class="acc-head w-full flex items-center justify-between px-6 py-5 text-left font-disp font-bold text-lg transition-colors">
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-microphone-lines text-ember"></i> 专业与表达类奖项
+          </span>
+          <span class="flex items-center gap-3">
+            <span class="font-mono text-xs text-pine">×4</span>
+            <i class="fa-solid fa-plus acc-icon text-pine"></i>
+          </span>
+        </button>
+        <div class="acc-body px-6">
+          <ul class="pb-6 space-y-3 text-pine text-sm leading-relaxed">
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级英语"讲好中国故事"<span class="text-ember font-medium">一等奖</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级英语演讲大赛<span class="text-ember font-medium">一等奖</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级经典诵读决赛 二等奖</li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级数学素养大赛 二等奖</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item card rounded-2xl overflow-hidden">
+        <button class="acc-head w-full flex items-center justify-between px-6 py-5 text-left font-disp font-bold text-lg transition-colors">
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-lightbulb text-ember"></i> 创新竞赛与跨界探索
+          </span>
+          <span class="flex items-center gap-3">
+            <span class="font-mono text-xs text-pine">×3</span>
+            <i class="fa-solid fa-plus acc-icon text-pine"></i>
+          </span>
+        </button>
+        <div class="acc-body px-6">
+          <ul class="pb-6 space-y-3 text-pine text-sm leading-relaxed">
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校心理治愈漫画《遇见白猫》创作大赛<span class="text-ember font-medium">一等奖</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>"未来太空车"竞赛 二等奖</li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>"歌曲中的科学"湖南郴州赛区 三等奖</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="acc-item card rounded-2xl overflow-hidden">
+        <button class="acc-head w-full flex items-center justify-between px-6 py-5 text-left font-disp font-bold text-lg transition-colors">
+          <span class="flex items-center gap-3">
+            <i class="fa-solid fa-medal text-ember"></i> 综合素质奖项
+          </span>
+          <span class="flex items-center gap-3">
+            <span class="font-mono text-xs text-pine">×3</span>
+            <i class="fa-solid fa-plus acc-icon text-pine"></i>
+          </span>
+        </button>
+        <div class="acc-body px-6">
+          <ul class="pb-6 space-y-3 text-pine text-sm leading-relaxed">
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级艺术节合唱比赛<span class="text-ember font-medium">一等奖</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>校级足球比赛<span class="text-ember font-medium">一等奖</span></li>
+            <li class="flex gap-3"><i class="fa-solid fa-circle text-ember text-[6px] mt-2"></i>田径运动会高二女子 4×100 接力 第四名</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     07 联系方式
+============================================================ -->
+<section id="contact" class="py-24 md:py-36">
+  <div class="max-w-[680px] mx-auto px-6 text-center">
+    <p class="reveal section-marker mb-4 justify-center">Contact / 07</p>
+    <h2 class="reveal font-disp text-3xl sm:text-4xl font-bold mb-6" data-delay="1">与我联系</h2>
+    <p class="reveal text-pine leading-relaxed mb-12" data-delay="2">
+      实习机会、内容合作、AI 玩法交流——都欢迎随时找我聊聊。
+    </p>
+    <div class="reveal space-y-6 font-disp text-2xl sm:text-3xl font-bold" data-delay="3">
+      <div>
+        <a href="mailto:jianshan4567@qq.com" class="u-link">
+          jianshan4567@qq.com<span class="fill"></span>
+        </a>
+      </div>
+      <div>
+        <a href="tel:13975546082" class="u-link">
+          139 7554 6082<span class="fill"></span>
+        </a>
+      </div>
+      <p class="text-base font-body font-normal text-pine flex items-center justify-center gap-2">
+        <i class="fa-solid fa-location-dot text-ember"></i> 北京 · 可随时到岗实习
+      </p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 页脚：年份自动更新 -->
+<footer class="border-t border-forest/10 py-8 text-center text-sm text-pine">
+  <p>© <span id="year"></span> 王佳铃 · 用文字与代码记录成长 <i class="fa-solid fa-heart text-ember"></i></p>
+</footer>
+
+<!-- 返回顶部 -->
+<button id="back-top" aria-label="返回顶部"
+        class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full bg-ember text-cream
+               shadow-lg hover:bg-forest transition-colors">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<!-- 图片灯箱遮罩 -->
+<div id="lightbox" class="fixed inset-0 z-[60] bg-forest/90 backdrop-blur-sm hidden items-center justify-center p-6 cursor-zoom-out">
+  <img id="lightbox-img" class="max-w-full max-h-full rounded-xl shadow-2xl" alt="放大预览" />
+</div>
+
+<script>
+/* ================================================================
+   全部交互逻辑（原生 JS）
+   1) 墨点画布  2) 鼠标多层视差  3) Hero 滚动视差
+   4) 滚动进场  5) 数字计数  6) 技能条  7) 手风琴
+   8) 图片灯箱  9) 导航/菜单/返回顶部  10) 打字机
+================================================================ */
+(() => {
+'use strict';
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------------------------------------------------------------
+   1) Hero 墨点画布
+   浅色纸张底上的"墨点星网"：墨绿粒子缓慢漂浮、邻近连线，
+   鼠标相当于一个临时节点，靠近时会被吸附连线。
+---------------------------------------------------------------- */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+const mouse = { x: null, y: null };
+let particles = [];
+let W = 0, H = 0;
+
+function resizeCanvas() {
+  const hero = document.getElementById('hero');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2); // Retina 适配，上限 2 防止性能浪费
+  W = hero.clientWidth; H = hero.clientHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  initParticles();
+}
+
+function initParticles() {
+  const count = Math.min(Math.floor(W * H / 16000), 90); // 数量随面积自适应
+  particles = Array.from({ length: count }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - .5) * .3,
+    vy: (Math.random() - .5) * .3,
+    r: Math.random() * 1.8 + .8,
+  }));
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+  const LINK_DIST = 130, MOUSE_DIST = 180;
+
+  for (const p of particles) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;   // 出界回绕
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,48,33,.4)';           // 墨绿点
+    ctx.fill();
+  }
+
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const a = particles[i], b = particles[j];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < LINK_DIST) {
+        ctx.strokeStyle = `rgba(0,48,33,${(1 - d / LINK_DIST) * .14})`; // 透明度随距离衰减
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+      }
+    }
+    if (mouse.x !== null) {
+      const p = particles[i];
+      const d = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+      if (d < MOUSE_DIST) {
+        ctx.strokeStyle = `rgba(255,97,56,${(1 - d / MOUSE_DIST) * .55})`; // 鼠标连线用橙红
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+      }
+    }
+  }
+  if (!reducedMotion) requestAnimationFrame(drawParticles);
+}
+
+/* ---------------------------------------------------------------
+   2) 鼠标多层视差：三个辉光色块按 data-depth 不同速率跟随
+---------------------------------------------------------------- */
+const blobs = document.querySelectorAll('.blob');
+window.addEventListener('mousemove', e => {
+  const nx = e.clientX / window.innerWidth - .5;
+  const ny = e.clientY / window.innerHeight - .5;
+  if (!reducedMotion) {
+    blobs.forEach(b => {
+      const depth = parseFloat(b.dataset.depth);
+      b.style.transform = `translate(${nx * depth * 1000}px, ${ny * depth * 1000}px)`;
+    });
+  }
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+}, { passive: true });
+window.addEventListener('mouseleave', () => { mouse.x = mouse.y = null; });
+
+/* ---------------------------------------------------------------
+   3) Hero 滚动视差 + 导航栏 + 返回顶部（合并到一个节流回调）
+---------------------------------------------------------------- */
+const navbar = document.getElementById('navbar');
+const backTop = document.getElementById('back-top');
+const heroInner = document.getElementById('hero-inner');
+let ticking = false;
+window.addEventListener('scroll', () => {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    const y = window.scrollY;
+    if (!reducedMotion && y < window.innerHeight) {
+      heroInner.style.setProperty('--plax', `${y * .32}px`);   // 0.32 倍速视差
+      heroInner.style.setProperty('--plax-fade', Math.min(y / window.innerHeight, .9));
+    }
+    navbar.classList.toggle('scrolled', y > 40);
+    backTop.classList.toggle('show', y > 600);
+    ticking = false;
+  });
+}, { passive: true });
+
+/* ---------------------------------------------------------------
+   4) 滚动进场：IntersectionObserver，浏览器原生优化
+---------------------------------------------------------------- */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ---------------------------------------------------------------
+   5) 数字计数器：easeOutExpo 缓动，先快后慢
+---------------------------------------------------------------- */
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    counterObserver.unobserve(el);
+    const target = +el.dataset.target;
+    const start = performance.now(), dur = 1400;
+    (function tick(now) {
+      const t = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(2, -10 * t)));
+      if (t < 1) requestAnimationFrame(tick);
+    })(start);
+  });
+}, { threshold: .6 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+/* ---------------------------------------------------------------
+   6) 技能条：JS 写数据，CSS 管动效
+---------------------------------------------------------------- */
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const bar = entry.target.querySelector('i');
+      bar.style.width = bar.dataset.value + '%';
+      skillObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: .5 });
+document.querySelectorAll('.skill-bar').forEach(el => skillObserver.observe(el));
+
+/* ---------------------------------------------------------------
+   7) 荣誉手风琴：按内容真实高度设置 max-height，
+   比固定大数值更平滑；同时只展开一个面板
+---------------------------------------------------------------- */
+document.querySelectorAll('.acc-item').forEach(item => {
+  const head = item.querySelector('.acc-head');
+  const body = item.querySelector('.acc-body');
+  head.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    /* 先收起其他面板，保证同一时刻只有一个展开（手风琴语义） */
+    document.querySelectorAll('.acc-item.open').forEach(o => {
+      o.classList.remove('open');
+      o.querySelector('.acc-body').style.maxHeight = '0px';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px'; // scrollHeight = 内容真实高度
+    }
+  });
+});
+
+/* ---------------------------------------------------------------
+   8) 图片灯箱：点击画廊图放大，点击任意处 / Esc 关闭
+---------------------------------------------------------------- */
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+document.querySelectorAll('.gallery-img').forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden'; // 锁定背景滚动
+  });
+});
+function closeLightbox() {
+  lightbox.classList.add('hidden');
+  lightbox.classList.remove('flex');
+  document.body.style.overflow = '';
+}
+lightbox.addEventListener('click', closeLightbox);
+window.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+/* ---------------------------------------------------------------
+   9) 移动端菜单 / 返回顶部 / 年份
+---------------------------------------------------------------- */
+const menuBtn = document.getElementById('menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+menuBtn.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  menuBtn.innerHTML = open ? '<i class="fa-solid fa-xmark"></i>' : '<i class="fa-solid fa-bars"></i>';
+});
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+  })
+);
+backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ---------------------------------------------------------------
+   10) Slogan 打字机：突出"AI × 人文"的关键词句循环
+---------------------------------------------------------------- */
+const slogans = [
+  '让 AI 有温度，让文字有力量。',
+  '用人文之心，驭智能之力。',
+  '好奇心是最强的自驱力。',
+];
+if (!reducedMotion) {
+  const typed = document.getElementById('typed-slogan');
+  let sIdx = 0, cIdx = slogans[0].length, deleting = false;
+  (function typeLoop() {
+    const s = slogans[sIdx];
+    cIdx += deleting ? -1 : 1;
+    typed.textContent = s.slice(0, cIdx);
+    let wait = deleting ? 30 : 110;       // 中文逐字输入稍慢，更有仪式感
+    if (!deleting && cIdx === s.length) { wait = 2400; deleting = true; }
+    else if (deleting && cIdx === 0) { deleting = false; sIdx = (sIdx + 1) % slogans.length; wait = 600; }
+    setTimeout(typeLoop, wait);
+  })();
+}
+
+/* 启动画布 */
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+if (reducedMotion) drawParticles(); // 减少动态：只画一帧静态星网
+else requestAnimationFrame(drawParticles);
+
+})();
+</script>
+</body>
+</html>
